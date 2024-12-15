@@ -1,7 +1,6 @@
 package com.model.chatgpt.connector;
 
-import com.model.chatgpt.dto.request.MultiChatRequest;
-import com.model.chatgpt.dto.response.MultiChatResponse;
+import com.model.chatgpt.exception.ChatGPTServerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +21,17 @@ public class OpenAIConnector {
     @Autowired
     private RestTemplate restTemplate;
 
-    public <T> T getResponse(HttpEntity<?> httpEntity, Class<T> responseType, String url) {
-        log.info("request url: {}, httpEntity: {}", url, httpEntity);
+    public <T> T response(HttpEntity<?> httpEntity, Class<T> responseType, String url) {
+        log.debug("Triggering url: {}, with httpEntity: {}", url, httpEntity);
+
         ResponseEntity<T> responseEntity = restTemplate.postForEntity(url, httpEntity, responseType);
-        if (responseEntity.getStatusCodeValue() != HttpStatus.OK.value()) {
-            log.error("error response status: {}", responseEntity);
-            throw new RuntimeException("error response status :" + responseEntity.getStatusCodeValue());
-        } else {
-            log.info("response: {}", responseEntity);
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            log.error("Connection Error Occurred while Triggering URL: {}, with Error Response: {}", url, responseEntity);
+            throw new ChatGPTServerException("Error Response Status :" + responseEntity.getStatusCode().value());
         }
+
+        log.info("Response: {}", responseEntity);
         return responseEntity.getBody();
     }
 

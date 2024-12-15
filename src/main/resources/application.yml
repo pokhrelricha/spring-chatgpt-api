@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: chatgpt
+
+openai:
+  api:
+    key: YOUR_KEY
+    url: https://api.openai.com/v1/chat/completions
+  model: gpt-3.5-turbo
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug  # Enables debug logging for Spring Web (HTTP client)
+    org.apache.http: debug         # Enables debug logging for Apache HTTP Client (if used)
+    org.springframework.http.client: debug  # Enables debug logs for RestTemplate and WebClient

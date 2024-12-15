@@ -1,7 +1,7 @@
 package com.model.chatgpt.service;
 
 import com.model.chatgpt.dto.request.ChatRequest;
-import com.model.chatgpt.dto.request.MultiChatRequest;
+import com.model.chatgpt.dto.request.MultiChatMessageList;
 import com.model.chatgpt.dto.response.ChatResponse;
 
 /**
@@ -11,5 +11,5 @@ public interface ChatGPTMessageService {
 
     ChatResponse sendChatRequest(ChatRequest chatRequest);
 
-    ChatResponse sendMultiChatRequest(MultiChatRequest multiChatRequest);
+    ChatResponse sendMultiChatRequest(MultiChatMessageList multiChatRequest);
 }
